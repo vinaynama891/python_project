@@ -262,3 +262,37 @@ cloudpulse/
 - **Degree:** B.Tech Computer Science & Engineering (Session 2026–2027)
 - **Course:** Advanced Python Capstone Project
 - **Official Documentation:** See [docs/CAPSTONE_PROJECT_REPORT.md](docs/CAPSTONE_PROJECT_REPORT.md) for the complete 22-section project report including research papers, mathematical formulas, algorithms, flowchart diagrams, and benchmark results.
+
+
+
+<-------------------------------------------------------------------Execution Steps---------------------------------->
+Step 1: Open PowerShell / Command Prompt
+Open your terminal and navigate to the project directory:
+powershell
+cd "s:\python project"
+
+
+Step 2: Start the Backend Server (Terminal 1)
+Run the FastAPI backend server:
+powershell
+python -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000
+Note: The backend automatically serves both the FastAPI REST API and the React production dashboard from http://127.0.0.1:8000.
+
+
+
+Step 3: Open the Web Dashboard in Your Browser
+Open Chrome, Brave, Edge, or Firefox and go to: 👉 http://127.0.0.1:8000
+Log in with your administrator account:
+Email: admin@cloudpulse.io
+Password: CloudPulsePassword2026!
+(You can also click "Create an account" to register a new organization).
+
+
+
+Step 4: Start the Host Monitoring Agent (Terminal 2)
+Open a second PowerShell window, navigate to s:\python project, and run:
+powershell
+python -m agent.main
+You will see the agent start collecting real hardware metrics and transmitting them every 5 seconds:
+[CloudPulse-Agent] CloudPulse Agent started (Server ID: dec8e8b3eff745b492dad5c633a4d820).
+[CloudPulse-Agent] Metric sent - CPU: 49.0% | RAM: 87.9% | Disk: 53.9% | Net: Active

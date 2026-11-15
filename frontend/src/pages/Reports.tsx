@@ -2,11 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   FileText,
   Download,
-  Calendar,
-  Server as ServerIcon,
-  Activity,
-  CheckCircle2,
-  RefreshCw
+  Calendar
 } from 'lucide-react';
 import { reportsApi } from '../services/api';
 
@@ -40,13 +36,13 @@ export const Reports: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white flex items-center space-x-3">
+          <h1 className="text-2xl font-black tracking-tight text-white flex items-center space-x-3">
             <span>Executive Infrastructure Reports</span>
-            <span className="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono">
-              Audit-Ready PDF / CSV
+            <span className="text-xs px-2.5 py-0.5 rounded-full bg-yellow-400/10 text-yellow-400 border border-yellow-400/30 font-mono font-bold">
+              PDF & CSV AUDIT LOGS
             </span>
           </h1>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-xs text-neutral-400 mt-1">
             Historical aggregation, SLA compliance metrics, and downloadable audits.
           </p>
         </div>
@@ -54,27 +50,27 @@ export const Reports: React.FC = () => {
         <div className="flex items-center space-x-2 self-start">
           <button
             onClick={() => handleExport('csv')}
-            className="flex items-center space-x-2 py-2 px-3.5 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 hover:text-white text-xs font-medium transition-colors"
+            className="flex items-center space-x-2 py-2 px-3.5 rounded-lg bg-[#0e0e0e] border border-[#262626] text-neutral-300 hover:text-yellow-400 hover:border-yellow-400/40 text-xs font-bold transition-colors"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Export CSV</span>
           </button>
           <button
             onClick={() => handleExport('pdf')}
-            className="flex items-center space-x-2 py-2 px-3.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white text-xs font-medium shadow-lg shadow-sky-600/20 transition-colors"
+            className="flex items-center space-x-2 py-2 px-3.5 rounded-lg bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-black text-xs font-black shadow-lg shadow-yellow-500/20 transition-colors"
           >
-            <FileText className="w-3.5 h-3.5" />
+            <FileText className="w-3.5 h-3.5 text-black stroke-[2.5]" />
             <span>Download PDF</span>
           </button>
         </div>
       </div>
 
       {/* Period Selector Tabs */}
-      <div className="flex items-center space-x-3 bg-[#0c1220] p-1.5 rounded-xl border border-slate-800 w-fit">
+      <div className="flex items-center space-x-3 bg-[#0a0a0a] p-1.5 rounded-xl border border-[#1f1f1f] w-fit">
         <button
           onClick={() => setPeriod('daily')}
-          className={`flex items-center space-x-2 px-4 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-            period === 'daily' ? 'bg-sky-600 text-white shadow' : 'text-slate-400 hover:text-white'
+          className={`flex items-center space-x-2 px-4 py-1.5 rounded-lg text-xs font-black transition-all ${
+            period === 'daily' ? 'bg-yellow-400 text-black shadow' : 'text-neutral-400 hover:text-white'
           }`}
         >
           <Calendar className="w-3.5 h-3.5" />
@@ -82,8 +78,8 @@ export const Reports: React.FC = () => {
         </button>
         <button
           onClick={() => setPeriod('weekly')}
-          className={`flex items-center space-x-2 px-4 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-            period === 'weekly' ? 'bg-sky-600 text-white shadow' : 'text-slate-400 hover:text-white'
+          className={`flex items-center space-x-2 px-4 py-1.5 rounded-lg text-xs font-black transition-all ${
+            period === 'weekly' ? 'bg-yellow-400 text-black shadow' : 'text-neutral-400 hover:text-white'
           }`}
         >
           <Calendar className="w-3.5 h-3.5" />
@@ -92,43 +88,43 @@ export const Reports: React.FC = () => {
       </div>
 
       {loading ? (
-        <div className="p-12 text-center text-slate-400 text-sm">Compiling historical report...</div>
+        <div className="p-12 text-center text-neutral-400 text-xs font-mono">Compiling historical report...</div>
       ) : !report ? (
-        <div className="p-12 text-center text-slate-400 text-xs">No report data generated.</div>
+        <div className="p-12 text-center text-neutral-400 text-xs">No report data generated.</div>
       ) : (
         <div className="space-y-6">
-          {/* Executive Overview Cards */}
+          {/* Executive Overview Cards in Black & Yellow */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="p-4 rounded-xl bg-[#0c1220] border border-slate-800">
-              <span className="text-xs text-slate-400 uppercase font-mono">Telemetry Data Points</span>
-              <p className="text-2xl font-bold text-white font-mono mt-2">{report.metrics_analyzed}</p>
-              <p className="text-xs text-slate-500 mt-1">Across {report.server_count} nodes</p>
+            <div className="p-4 rounded-xl bg-[#0a0a0a] border border-[#1f1f1f]">
+              <span className="text-xs text-neutral-400 uppercase font-mono font-bold">Telemetry Data Points</span>
+              <p className="text-2xl font-black text-white font-mono mt-2">{report.metrics_analyzed}</p>
+              <p className="text-xs text-neutral-500 mt-1">Across {report.server_count} nodes</p>
             </div>
-            <div className="p-4 rounded-xl bg-[#0c1220] border border-slate-800">
-              <span className="text-xs text-slate-400 uppercase font-mono">Average CPU Load</span>
-              <p className="text-2xl font-bold text-sky-400 font-mono mt-2">{report.avg_cpu}%</p>
-              <p className="text-xs text-slate-500 mt-1">Peak: {report.max_cpu}%</p>
+            <div className="p-4 rounded-xl bg-[#0a0a0a] border border-[#1f1f1f]">
+              <span className="text-xs text-neutral-400 uppercase font-mono font-bold">Average CPU Load</span>
+              <p className="text-2xl font-black text-yellow-400 font-mono mt-2">{report.avg_cpu}%</p>
+              <p className="text-xs text-neutral-500 mt-1">Peak: {report.max_cpu}%</p>
             </div>
-            <div className="p-4 rounded-xl bg-[#0c1220] border border-slate-800">
-              <span className="text-xs text-slate-400 uppercase font-mono">Average Memory Load</span>
-              <p className="text-2xl font-bold text-purple-400 font-mono mt-2">{report.avg_ram}%</p>
-              <p className="text-xs text-slate-500 mt-1">SLA target: &lt;85%</p>
+            <div className="p-4 rounded-xl bg-[#0a0a0a] border border-[#1f1f1f]">
+              <span className="text-xs text-neutral-400 uppercase font-mono font-bold">Average Memory Load</span>
+              <p className="text-2xl font-black text-amber-400 font-mono mt-2">{report.avg_ram}%</p>
+              <p className="text-xs text-neutral-500 mt-1">SLA target: &lt;85%</p>
             </div>
-            <div className="p-4 rounded-xl bg-[#0c1220] border border-slate-800">
-              <span className="text-xs text-slate-400 uppercase font-mono">Total Alert Incidents</span>
-              <p className="text-2xl font-bold text-rose-400 font-mono mt-2">{report.total_alerts}</p>
-              <p className="text-xs text-emerald-400 mt-1">{report.resolved_alerts} resolved</p>
+            <div className="p-4 rounded-xl bg-[#0a0a0a] border border-[#1f1f1f]">
+              <span className="text-xs text-neutral-400 uppercase font-mono font-bold">Total Alert Incidents</span>
+              <p className="text-2xl font-black text-rose-400 font-mono mt-2">{report.total_alerts}</p>
+              <p className="text-xs text-yellow-400 mt-1 font-mono">{report.resolved_alerts} resolved</p>
             </div>
           </div>
 
           {/* Node Breakdown Table */}
-          <div className="rounded-xl bg-[#0c1220] border border-slate-800 overflow-hidden shadow-xl">
-            <div className="p-4 border-b border-slate-800">
+          <div className="rounded-xl bg-[#0a0a0a] border border-[#1f1f1f] overflow-hidden shadow-xl">
+            <div className="p-4 border-b border-[#1a1a1a] bg-[#0e0e0e]">
               <h3 className="text-sm font-bold text-white">Server Fleet Performance Breakdown</h3>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs font-mono">
-                <thead className="bg-slate-900/60 text-slate-400 uppercase border-b border-slate-800">
+                <thead className="bg-[#121212] text-neutral-400 uppercase border-b border-[#1c1c1c]">
                   <tr>
                     <th className="py-3 px-4">Node Name</th>
                     <th className="py-3 px-4">Status</th>
@@ -138,15 +134,15 @@ export const Reports: React.FC = () => {
                     <th className="py-3 px-4">Ingested Samples</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/60">
+                <tbody className="divide-y divide-[#1a1a1a]">
                   {report.server_breakdown && report.server_breakdown.map((s: any) => (
-                    <tr key={s.server_id} className="hover:bg-slate-800/30">
+                    <tr key={s.server_id} className="hover:bg-[#121212]">
                       <td className="py-3 px-4 font-bold text-white font-sans">{s.name}</td>
-                      <td className="py-3 px-4 uppercase text-emerald-400">{s.status}</td>
-                      <td className="py-3 px-4 text-slate-200">{s.avg_cpu}%</td>
-                      <td className="py-3 px-4 text-slate-200">{s.avg_ram}%</td>
-                      <td className="py-3 px-4 text-slate-200">{s.avg_disk}%</td>
-                      <td className="py-3 px-4 text-slate-400">{s.data_points}</td>
+                      <td className="py-3 px-4 uppercase text-yellow-400 font-bold">{s.status}</td>
+                      <td className="py-3 px-4 text-neutral-200">{s.avg_cpu}%</td>
+                      <td className="py-3 px-4 text-neutral-200">{s.avg_ram}%</td>
+                      <td className="py-3 px-4 text-neutral-200">{s.avg_disk}%</td>
+                      <td className="py-3 px-4 text-neutral-500">{s.data_points}</td>
                     </tr>
                   ))}
                 </tbody>
