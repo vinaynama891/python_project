@@ -9,7 +9,10 @@ from collections import deque
 from typing import Optional, Dict, Any
 import requests
 
-from agent.config.settings import AgentConfig
+try:
+    from agent.config.settings import AgentConfig
+except ImportError:
+    from config.settings import AgentConfig
 
 logger = logging.getLogger("CloudPulseAgent.Sender")
 

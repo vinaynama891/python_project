@@ -8,7 +8,10 @@ import logging
 from typing import Optional, Tuple
 import requests
 
-from agent.config.settings import AgentConfig
+try:
+    from agent.config.settings import AgentConfig
+except ImportError:
+    from config.settings import AgentConfig
 
 logger = logging.getLogger("CloudPulseAgent.Auth")
 

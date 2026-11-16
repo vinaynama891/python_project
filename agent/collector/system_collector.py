@@ -9,7 +9,10 @@ from datetime import datetime, timezone
 from typing import Dict, Any, Optional
 
 import psutil
-from agent.collector.process_collector import ProcessCollector
+try:
+    from agent.collector.process_collector import ProcessCollector
+except ImportError:
+    from collector.process_collector import ProcessCollector
 
 
 class SystemCollector:

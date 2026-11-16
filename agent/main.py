@@ -11,13 +11,23 @@ import logging
 import json
 from pathlib import Path
 
-# Add project root to sys.path so modules resolve cleanly
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+# Add paths so both 'agent.xxx' and local package imports resolve cleanly
+agent_dir = Path(__file__).resolve().parent
+if str(agent_dir) not in sys.path:
+    sys.path.insert(0, str(agent_dir))
+if str(agent_dir.parent) not in sys.path:
+    sys.path.insert(0, str(agent_dir.parent))
 
-from agent.config.settings import AgentConfig
-from agent.collector.system_collector import SystemCollector
-from agent.transport.sender import MetricSender
-from agent.transport.auth import register_agent
+try:
+    from agent.config.settings import AgentConfig
+    from agent.collector.system_collector import SystemCollector
+    from agent.transport.sender import MetricSender
+    from agent.transport.auth import register_agent
+except ImportError:
+    from config.settings import AgentConfig
+    from collector.system_collector import SystemCollector
+    from transport.sender import MetricSender
+    from transport.auth import register_agent
 
 logging.basicConfig(
     level=logging.INFO,
