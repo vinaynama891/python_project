@@ -1,6 +1,7 @@
 """
 CloudPulse Alerts Endpoints
 """
+from datetime import datetime, timezone
 from typing import Any, List, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
@@ -157,3 +158,39 @@ def resolve_alert_endpoint(
         resolved_by=updated.resolved_by,
         created_at=updated.created_at
     )
+
+
+
+@router.put("/resolve-all")
+def resolve_all_alerts(
+    current_user: User = Depends(get_current_user),
+    current_org: Organization = Depends(get_current_org),
+    db: Session = Depends(get_db)
+) -> Any:
+    """Bulk-resolve ALL active/acknowledged alerts for the current organization."""
+    now = datetime.now(timezone.utc)
+    resolver = current_user.full_name or current_user.email or "Admin"
+
+    count = (
+        db.query(Alert)
+        .filter(
+            Alert.organization_id == current_org.id,
+            Alert.status.in_(["active", "acknowledged"])
+        )
+        .update(
+            {
+                Alert.status: "resolved",
+                Alert.resolved_at: now,
+                Alert.resolved_by: resolver,
+            },
+            synchronize_session="fetch"
+        )
+    )
+    db.commit()
+
+    return {
+        "status": "success",
+        "resolved_count": count,
+        "resolved_by": resolver,
+        "message": f"Successfully resolved {count} alerts."
+    }

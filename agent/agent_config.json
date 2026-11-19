@@ -1,7 +1,7 @@
 {
-  "server_url": "http://127.0.0.1:8000",
-  "server_id": "dec8e8b3eff745b492dad5c633a4d820",
-  "agent_token": "cp_agt_s6X0Ix0239b_yVIIrX02TAJOwkkqX-BOpG5sRGVN5zw",
+  "server_url": "http://localhost:8000",
+  "server_id": "f9a455296ec3423a9fae3c61906d197a",
+  "agent_token": "cp_agt_z5cA3RCY0z-TQvawhWDxYpwhAs3ltrj21XYX4F_1NsE",
   "collection_interval": 5,
   "heartbeat_interval": 15,
   "max_queue_size": 120,

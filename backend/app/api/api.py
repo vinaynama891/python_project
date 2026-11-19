@@ -12,7 +12,8 @@ from backend.app.api.endpoints import (
     analytics,
     ai,
     reports,
-    profiler
+    profiler,
+    pdt
 )
 
 api_router = APIRouter()
@@ -26,3 +27,4 @@ api_router.include_router(analytics.router, prefix="/analytics", tags=["Analytic
 api_router.include_router(ai.router, prefix="/ai", tags=["AI & Anomaly"])
 api_router.include_router(reports.router, prefix="/reports", tags=["Reports"])
 api_router.include_router(profiler.router, prefix="/profiler", tags=["Performance Profiler"])
+api_router.include_router(pdt.router, prefix="/pdt", tags=["Performance Debt Tracker"])

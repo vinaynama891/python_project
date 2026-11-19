@@ -9,7 +9,130 @@ import {
 import { aiApi } from '../services/api';
 import { AnomalyLog, ModelStatus, Recommendation } from '../types';
 
+import React, { useState, useEffect } from 'react';
+import {
+  BrainCircuit,
+  AlertOctagon,
+  Sparkles,
+  Info,
+  CheckCircle2
+} from 'lucide-react';
+import { aiApi } from '../services/api';
+import { AnomalyLog, ModelStatus, Recommendation } from '../types';
++import { serverApi } from '../services/api';
++
++// New state for server selection
++const [servers, setServers] = useState<Server[]>([]);
++const [selectedServer, setSelectedServer] = useState<string>('');
++
++// Load servers list on component mount
++useEffect(() => {
++  const loadServers = async () => {
++    try {
++      const srv = await serverApi.getServers();
++      setServers(srv);
++      if (srv.length > 0) setSelectedServer(srv[0].id);
++    } catch (e) {
++      console.error('Failed to load servers', e);
++    }
++  };
++  loadServers();
++}, []);
+
 export const AIAnalytics: React.FC = () => {
+  const [anomalies, setAnomalies] = useState<AnomalyLog[]>([]);
+  const [modelStatus, setModelStatus] = useState<ModelStatus | null>(null);
+  const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
+  const [training, setTraining] = useState(false);
+  const [trainMessage, setTrainMessage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+@@
+   const loadData = async () => => {
+@@
+   };
+@@
+   const handleTrain = async () => => {
+@@
+   };
++
++  // New handler to run anomaly detection for the selected server
++  const handleDetect = async () => {
++    if (!selectedServer) return;
++    try {
++      // Default look‑back of 60 minutes
++      const res = await aiApi.detectAnomalies(selectedServer);
++      // Refresh the anomalies list after detection
++      await loadData();
++    } catch (err: any) {
++      console.error('Detection failed', err);
++    }
++  };
+@@
+   return (
+     <div className="space-y-8">
+@@
+-      {/* Header */}
++      {/* Header */}
+@@
+-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
++        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+@@
+-          <h1 className="text-2xl font-black tracking-tight text-white flex items-center space-x-3">
++          <h1 className="text-2xl font-black tracking-tight text-white flex items-center space-x-3">
+@@
+-          </h1>
+-          <p className="text-xs text-neutral-400 mt-1">
+-            Unsupervised outlier detection identifying non-linear multidimensional telemetry anomalies.
+-          </p>
+-        </div>
+-
+-        <button
+-          onClick={handleTrain}
+-          disabled={training}
+-          className="flex items-center space-x-2 py-2 px-4 rounded-lg bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-black text-xs font-black shadow-lg shadow-yellow-500/20 transition-all disabled:opacity-50 self-start"
+-        >
+-          <Sparkles className="w-4 h-4 text-black stroke-[2.5]" />
+-          <span>{training ? 'Training Model...' : 'Train / Retrain Model'}</span>
+-        </button>
++          </h1>
++          <p className="text-xs text-neutral-400 mt-1">
++            Unsupervised outlier detection identifying non-linear multidimensional telemetry anomalies.
++          </p>
++        </div>
++
++        {/* Server selector */}
++        <select
++          value={selectedServer}
++          onChange={(e) => setSelectedServer(e.target.value)}
++          className="rounded-md bg-[#1a1a1a] text-white px-2 py-1"
++        >
++          {servers.map((s) => (
++            <option key={s.id} value={s.id}>
++              {s.name}
++            </option>
++          ))}
++        </select>
++
++        {/* Detect button */}
++        <button
++          onClick={handleDetect}
++          disabled={!selectedServer}
++          className="flex items-center space-x-2 py-2 px-4 rounded-lg bg-green-600 hover:bg-green-500 text-white text-xs font-bold transition-all disabled:opacity-50"
++        >
++          Detect Anomalies
++        </button>
++
++        {/* Train button */}
++        <button
++          onClick={handleTrain}
++          disabled={training}
++          className="flex items-center space-x-2 py-2 px-4 rounded-lg bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-black text-xs font-black shadow-lg shadow-yellow-500/20 transition-all disabled:opacity-50 self-start"
++        >
++          <Sparkles className="w-4 h-4 text-black stroke-[2.5]" />
++          <span>{training ? 'Training Model...' : 'Train / Retrain Model'}</span>
++        </button>
+*** End Patch
+*** End Patch {
   const [anomalies, setAnomalies] = useState<AnomalyLog[]>([]);
   const [modelStatus, setModelStatus] = useState<ModelStatus | null>(null);
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);

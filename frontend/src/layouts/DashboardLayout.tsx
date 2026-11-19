@@ -1,17 +1,6 @@
 import React from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
-import {
-  Activity,
-  Server,
-  AlertTriangle,
-  BrainCircuit,
-  Zap,
-  FileText,
-  Settings,
-  LogOut,
-  Radio,
-  ChevronRight
-} from 'lucide-react';
+import { Gauge } from 'lucide-react';
 import { useWebSocket } from '../hooks/useWebSocket';
 
 export const DashboardLayout: React.FC = () => {

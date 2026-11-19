@@ -336,3 +336,65 @@ class OverviewAnalytics(BaseModel):
     total_network_upload_speed: float
     total_network_download_speed: float
     active_alerts_count: int
+
+
+# ---------------- Performance Debt Tracker (PDT) ----------------
+class PerformanceDebtCreate(BaseModel):
+    server_id: str
+    category: str = Field(..., pattern="^(cpu|memory|disk|network|process)$")
+    title: str
+    description: str
+    debt_score: float = Field(0.0, ge=0.0, le=100.0)
+    trend_direction: str = "stable"
+    avg_metric_value: Optional[float] = None
+    peak_metric_value: Optional[float] = None
+    threshold_value: Optional[float] = None
+    estimated_impact: str = "medium"
+
+
+class PerformanceDebtUpdate(BaseModel):
+    status: Optional[str] = Field(None, pattern="^(open|investigating|mitigated|closed)$")
+    resolution_notes: Optional[str] = None
+    resolved_by: Optional[str] = None
+    debt_score: Optional[float] = Field(None, ge=0.0, le=100.0)
+    trend_direction: Optional[str] = None
+    estimated_impact: Optional[str] = None
+
+
+class PerformanceDebtOut(BaseModel):
+    id: str
+    server_id: str
+    server_name: Optional[str] = None
+    organization_id: str
+    category: str
+    title: str
+    description: str
+    debt_score: float
+    trend_direction: str
+    occurrence_count: int
+    first_detected_at: datetime
+    last_detected_at: datetime
+    avg_metric_value: Optional[float] = None
+    peak_metric_value: Optional[float] = None
+    threshold_value: Optional[float] = None
+    estimated_impact: str
+    status: str
+    resolution_notes: Optional[str] = None
+    resolved_at: Optional[datetime] = None
+    resolved_by: Optional[str] = None
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class PerformanceDebtSummary(BaseModel):
+    total_debts: int
+    open_debts: int
+    investigating_debts: int
+    mitigated_debts: int
+    closed_debts: int
+    avg_debt_score: float
+    critical_debts: int
+    high_debts: int
+    top_categories: Dict[str, int]

@@ -18,7 +18,7 @@ from backend.app.schemas.schemas import (
     AgentMetricPayload
 )
 from backend.app.services.alert_service import AlertEngine
-from backend.app.ml.anomaly_detector import ml_service
+from backend.app.ml.anomaly_detector import detect_anomalies, train_model, ml_service
 from backend.app.websocket.manager import ws_manager
 
 router = APIRouter()

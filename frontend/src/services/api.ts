@@ -42,7 +42,24 @@ api.interceptors.response.use(
 
 export const authApi = {
   login: async (email: string, password: string) => {
-    const res = await api.post('/auth/login', { email, password });
+    // FastAPI OAuth2PasswordRequestForm expects "application/x-www-form-urlencoded" payload.
+    const payload = new URLSearchParams();
+    payload.append('username', email);
+    payload.append('password', password);
+    const res = await api.post('/auth/login', payload, {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    });
+    // Backend may return `access_token`, `token`, or `jwt`
+    const token = res.data.access_token ?? res.data.token ?? res.data.jwt;
+    if (!token) {
+      console.error('Login response missing token:', res.data);
+      throw new Error('Authentication failed – token not received');
+    }
+    localStorage.setItem('cp_token', token);
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    if (res.data.user) {
+      localStorage.setItem('cp_user', JSON.stringify(res.data.user));
+    }
     return res.data;
   },
   register: async (email: string, password: string, fullName: string, orgName: string) => {
@@ -146,7 +163,7 @@ export const analyticsApi = {
   }
 };
 
-export const aiApi = {
+  detectAnomalies: async (serverId: string, minutes?: number) => {\n    const params: any = {};\n    if (minutes) params.minutes = minutes;\n    const res = await api.post(`/ai/detect/${serverId}`, null, { params });\n    return res.data;\n  },
   getAnomalies: async (serverId?: string): Promise<AnomalyLog[]> => {
     const params: any = {};
     if (serverId) params.server_id = serverId;
@@ -185,7 +202,7 @@ export const reportsApi = {
     const res = await api.get('/reports/weekly');
     return res.data;
   },
-  downloadExport: (format: 'csv' | 'pdf', days: number = 7) => {
+  downloadExport: async (format: 'csv' | 'pdf', days: number = 7) => {
     window.open(`/api/reports/export?format=${format}&days=${days}`, '_blank');
   }
 };

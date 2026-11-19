@@ -15,9 +15,8 @@ export const Login: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await authApi.login(email, password);
-      localStorage.setItem('cp_token', data.access_token);
-      localStorage.setItem('cp_user', JSON.stringify(data.user));
+      // authApi.login already stores token & user in localStorage
+      await authApi.login(email, password);
       navigate('/');
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Authentication failed. Please verify credentials.');

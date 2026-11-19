@@ -27,3 +27,14 @@ __all__ = [
     "AuditLog",
     "ModelMetadata"
 ]
+
+# Performance Debt Tracker (PDT) models
+from .pdt_models import (
+    PerformanceMetric,
+    PerformanceBaseline,
+    PerformanceDebt,
+    PerformanceIssue,
+    IssueHistory,
+    MonitoringConfig,
+    MLModelMeta,
+)

@@ -48,6 +48,7 @@ class Organization(Base):
     servers = relationship("Server", back_populates="organization", cascade="all, delete-orphan")
     alerts = relationship("Alert", back_populates="organization", cascade="all, delete-orphan")
     recommendations = relationship("Recommendation", back_populates="organization", cascade="all, delete-orphan")
+    performance_debts = relationship("PerformanceDebt", back_populates="organization", cascade="all, delete-orphan")
     audit_logs = relationship("AuditLog", back_populates="organization", cascade="all, delete-orphan")
     models = relationship("ModelMetadata", back_populates="organization", cascade="all, delete-orphan")
 
@@ -90,6 +91,7 @@ class Server(Base):
     alerts = relationship("Alert", back_populates="server", cascade="all, delete-orphan")
     anomalies = relationship("AnomalyLog", back_populates="server", cascade="all, delete-orphan")
     recommendations = relationship("Recommendation", back_populates="server", cascade="all, delete-orphan")
+    performance_debts = relationship("PerformanceDebt", back_populates="server", cascade="all, delete-orphan")
 
 
 class AgentCredential(Base):
@@ -234,6 +236,9 @@ class Recommendation(Base):
 
     server = relationship("Server", back_populates="recommendations")
     organization = relationship("Organization", back_populates="recommendations")
+
+
+
 
 
 class AuditLog(Base):
